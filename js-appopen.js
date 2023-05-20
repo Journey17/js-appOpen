@@ -1,12 +1,12 @@
-function testApp(url) {
+function testApp() {
   var hasApp = true
   var t1 = Date.now()
   var ifr = document.createElement('iframe')
-  ifr.setAttribute('src', url)
+  ifr.setAttribute('src', 'weixin://')
   ifr.setAttribute('style', 'display:none')
   document.body.appendChild(ifr)
 
-  setTimeout(function () {
+  var timeout = setTimeout(function () {
     var t2 = Date.now()
     if (!t1 || t2 - t1 < 1500) {
       // 设置定时器触发时间为1500ms
@@ -31,10 +31,13 @@ function testApp(url) {
         }
       }
     } else {
-      // 安装了微信
-      // window.location.href = "weixin://"; // 启用这里代码后会导致两次打开确认
+      // 在微信浏览器中打开
+      if (/MicroMessenger/i.test(navigator.userAgent)) {
+        alert('请长按图片识别二维码')
+      }
     }
 
+    clearTimeout(timeout)
     document.body.removeChild(ifr)
   }, 1500)
 }
